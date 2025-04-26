@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ali Mert - Sosyal Profil</title>
+  <style>
+    /* Genel stil ayarları */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    header {
+      background-color: #333;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .profile-container {
+      display: flex;
+      justify-content: center;
+      margin: 20px;
+    }
+    .profile-info {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      text-align: center;
+    }
+    .profile-info img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+    }
+    .social-links {
+      margin-top: 20px;
+    }
+    .social-links a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #333;
+      font-size: 20px;
+    }
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Ali Mert'in Sosyal Profil Sayfası</h1>
+  </header>
+
+  <div class="profile-container">
+    <div class="profile-info">
+      <img src="https://via.placeholder.com/100" alt="Ali Mert">
+      <h2>Ali Mert</h2>
+      <p>Web geliştiricisi ve teknoloji meraklısı</p>
+      <div class="social-links">
+        <a href="https://www.instagram.com/alimertkkarakaya" target="_blank">Instagram</a>
+        <a href="https://steamcommunity.com/id/BrownFast/" target="_blank">Steam</a>
+        <a href="https://www.twitch.tv/brownfast" target="_blank">Twitch</a>
+        <a href="https://youtube.com/@j3yerrortr" target="_blank">YouTube</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Güncel saat: <span id="current-time"></span></p>
+  </footer>
+
+  <script>
+    function updateTime() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const seconds = now.getSeconds().toString().padStart(2, '0');
+      document.getElementById('current-time').textContent = `${hours}:${minutes}:${seconds}`;
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+  </script>
+
+</body>
+</html>
