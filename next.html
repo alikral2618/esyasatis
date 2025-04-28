@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Şablon Seçimi</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      padding: 10px 20px;
+      border-bottom: 1px solid #ddd;
+    }
+    .navbar .left, .navbar .right {
+      display: flex;
+      align-items: center;
+    }
+    .navbar a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #333;
+    }
+    .sidebar {
+      width: 250px;
+      padding: 20px;
+      background: #f9f9f9;
+      height: calc(100vh - 50px);
+      box-sizing: border-box;
+      position: fixed;
+      top: 50px;
+      left: 0;
+      overflow-y: auto;
+      border-right: 1px solid #ddd;
+    }
+    .content {
+      margin-left: 270px;
+      padding: 30px;
+    }
+    .templates {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .template {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      background: white;
+    }
+    .template img {
+      width: 100%;
+      display: block;
+    }
+    .template-title {
+      padding: 10px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <div class="left">
+      <strong>Wix</strong>
+      <a href="#">Özellikler</a>
+      <a href="#">Keşfedin</a>
+      <a href="#">Abonelikler</a>
+      <a href="#">Şablonlar</a>
+      <a href="#">Destek</a>
+    </div>
+    <div class="right">
+      <a href="#">Giriş</a>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <input type="text" placeholder="Örn. müzik, fotoğraf" style="width: 100%; padding: 8px; margin-bottom: 20px;">
+    <h4>Görüntüle</h4>
+    <p>YENİ!</p>
+    <p>En Popüler</p>
+    <p>Boş Şablonlar</p>
+    <h4>Kategoriler</h4>
+    <p>Tüm Şablonları Gör</p>
+    <p>İş Dünyası</p>
+    <p>Sanal Mağaza</p>
+    <p>Fotoğrafçılık</p>
+    <p>Video</p>
+    <p>Müzik</p>
+  </div>
+
+  <div class="content">
+    <h2>Beğendiğiniz site şablonunu seçin</h2>
+    <div class="templates">
+      <div class="template">
+        <img src="https://via.placeholder.com/300x200?text=Coming+Soon" alt="Coming Soon">
+        <div class="template-title">Yakında Açılış Sayfası</div>
+      </div>
+      <div class="template">
+        <img src="https://via.placeholder.com/300x200?text=Success" alt="Success">
+        <div class="template-title">Başarı Koçu</div>
+      </div>
+      <div class="template">
+        <img src="https://via.placeholder.com/300x200?text=Construction" alt="Construction">
+        <div class="template-title">İnşaat Şirketi</div>
+      </div>
+      <div class="template">
+        <img src="https://via.placeholder.com/300x200?text=Nutrition" alt="Nutrition">
+        <div class="template-title">Beslenme Ürünleri</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
