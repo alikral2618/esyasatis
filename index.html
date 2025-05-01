@@ -1,147 +1,297 @@
-// MiniGram - Basit Firebase Sosyal Medya Uygulaması (React + Firebase)
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialMediaClone</title>
+    <style>
+        /* Genel stil ayarları */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f3f3f3;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-// 1. Firebase Ayarları - firebase.js
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+        header {
+            background-color: #ffffff;
+            padding: 15px 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
 
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
+        header h1 {
+            color: #0095f6;
+            font-size: 30px;
+            font-weight: bold;
+        }
 
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const db = getFirestore(app);
+        /* Profil Düzenleme */
+        .profile-edit-form {
+            background-color: #fff;
+            padding: 20px;
+            width: 350px;
+            margin-top: 100px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
 
+        .profile-edit-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
 
-// 2. Kullanıcı Girişi / Kayıt - Login.js
-import { useState } from "react";
-import { auth } from "./firebase";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+        .profile-edit-form button {
+            background-color: #0095f6;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
-export default function Login() {
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
-  const [isLogin, setIsLogin] = useState(true);
+        .profile-edit-form button:hover {
+            background-color: #007bb5;
+        }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (isLogin) {
-      await signInWithEmailAndPassword(auth, email, pass);
-    } else {
-      await createUserWithEmailAndPassword(auth, email, pass);
+        /* Profil Sayfası */
+        .profile-container {
+            margin-top: 130px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        .profile-header img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid #0095f6;
+            margin-bottom: 10px;
+        }
+
+        .profile-header h2 {
+            font-size: 26px;
+            color: #333;
+        }
+
+        .profile-header p {
+            color: #666;
+            font-size: 14px;
+            text-align: center;
+            width: 90%;
+            margin: 5px 0;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .stat {
+            text-align: center;
+            margin: 0 15px;
+        }
+
+        .stat span {
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .follow-btn {
+            background-color: #0095f6;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+
+        .follow-btn:hover {
+            background-color: #007bb5;
+        }
+
+        /* Paylaşım kısmı */
+        .feed {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-top: 60px;
+        }
+
+        .post {
+            background-color: #fff;
+            width: 500px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .post img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .post-content {
+            padding: 15px;
+        }
+
+        .post-footer {
+            padding: 15px;
+            background-color: #f3f3f3;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .post-footer button {
+            background-color: #0095f6;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .post-footer button:hover {
+            background-color: #007bb5;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Başlık ve Navbar -->
+<header>
+    <h1>SocialMediaClone</h1>
+</header>
+
+<!-- Profil Düzenleme -->
+<div class="profile-edit-form">
+    <h3>Profil Düzenle</h3>
+    <input type="text" id="user-name" placeholder="Adınızı Girin" value="John Doe">
+    <input type="text" id="user-bio" placeholder="Biyografi yazın" value="Hayat güzel!">
+    <button onclick="updateProfile()">Güncelle</button>
+</div>
+
+<!-- Profil Sayfası -->
+<div class="profile-container">
+    <div class="profile-header">
+        <img src="https://via.placeholder.com/120" alt="User Profile">
+        <h2 id="profile-name">John Doe</h2>
+        <p id="profile-bio">Hayat güzel!</p>
+    </div>
+
+    <div class="profile-stats">
+        <div class="stat">
+            <p>Takipçi</p>
+            <span id="follower-count">20</span>
+        </div>
+        <div class="stat">
+            <p>Takip Edilen</p>
+            <span id="following-count">10</span>
+        </div>
+        <div class="stat">
+            <p>Paylaşım</p>
+            <span id="post-count">5</span>
+        </div>
+    </div>
+
+    <a href="#" class="follow-btn" onclick="toggleFollow()">Takip Et</a>
+</div>
+
+<!-- Paylaşım Alanı -->
+<div class="feed">
+    <!-- Paylaşım 1 -->
+    <div class="post">
+        <div class="profile-header">
+            <img src="https://via.placeholder.com/40" alt="User Profile">
+            <h2>John Doe</h2>
+        </div>
+        <img src="https://via.placeholder.com/500x300" alt="Post Image">
+        <div class="post-content">
+            <p>Bugün çok güzel bir gün!</p>
+        </div>
+        <div class="post-footer">
+            <button>Beğen</button>
+            <button>Yorum Yap</button>
+        </div>
+    </div>
+
+    <!-- Paylaşım 2 -->
+    <div class="post">
+        <div class="profile-header">
+            <img src="https://via.placeholder.com/40" alt="User Profile">
+            <h2>Alice Smith</h2>
+        </div>
+        <img src="https://via.placeholder.com/500x300" alt="Post Image">
+        <div class="post-content">
+            <p>Harika bir manzara!</p>
+        </div>
+        <div class="post-footer">
+            <button>Beğen</button>
+            <button>Yorum Yap</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Profil güncelleme fonksiyonu
+    function updateProfile() {
+        const name = document.getElementById("user-name").value;
+        const bio = document.getElementById("user-bio").value;
+
+        document.getElementById("profile-name").innerText = name || "John Doe";
+        document.getElementById("profile-bio").innerText = bio || "Hayat güzel!";
     }
-  };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
-      <input type="password" value={pass} onChange={e => setPass(e.target.value)} placeholder="Password" />
-      <button type="submit">{isLogin ? "Giriş Yap" : "Kayıt Ol"}</button>
-      <p onClick={() => setIsLogin(!isLogin)} style={{ cursor: "pointer" }}>
-        {isLogin ? "Kayıt ol" : "Zaten hesabın var mı?"}
-      </p>
-    </form>
-  );
-}
+    // Takip etme fonksiyonu
+    let isFollowing = false;
+    function toggleFollow() {
+        isFollowing = !isFollowing;
+        const followButton = document.querySelector('.follow-btn');
 
+        if (isFollowing) {
+            followButton.innerText = 'Takibi Bırak';
+            document.getElementById("follower-count").innerText = parseInt(document.getElementById("follower-count").innerText) + 1;
+        } else {
+            followButton.innerText = 'Takip Et';
+            document.getElementById("follower-count").innerText = parseInt(document.getElementById("follower-count").innerText) - 1;
+        }
+    }
+</script>
 
-// 3. Gönderi Paylaşımı - PostForm.js
-import { useState } from "react";
-import { db } from "./firebase";
-import { addDoc, collection, Timestamp } from "firebase/firestore";
-
-export default function PostForm({ user }) {
-  const [videoUrl, setVideoUrl] = useState("");
-  const [desc, setDesc] = useState("");
-
-  const submitPost = async (e) => {
-    e.preventDefault();
-    await addDoc(collection(db, "posts"), {
-      user: user.email,
-      videoUrl,
-      desc,
-      createdAt: Timestamp.now(),
-      likes: [],
-    });
-    setVideoUrl("");
-    setDesc("");
-  };
-
-  return (
-    <form onSubmit={submitPost}>
-      <input placeholder="Video URL" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} />
-      <input placeholder="Açıklama" value={desc} onChange={(e) => setDesc(e.target.value)} />
-      <button type="submit">Paylaş</button>
-    </form>
-  );
-}
-
-
-// 4. Gönderi Listeleme ve Beğeni - PostList.js
-import { useEffect, useState } from "react";
-import { db } from "./firebase";
-import { collection, onSnapshot, updateDoc, doc } from "firebase/firestore";
-
-export default function PostList({ user }) {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    const unsub = onSnapshot(collection(db, "posts"), (snap) => {
-      setPosts(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-    });
-    return () => unsub();
-  }, []);
-
-  const likePost = async (id, likes) => {
-    const postRef = doc(db, "posts", id);
-    const newLikes = likes.includes(user.email)
-      ? likes.filter(l => l !== user.email)
-      : [...likes, user.email];
-    await updateDoc(postRef, { likes: newLikes });
-  };
-
-  return posts.map(post => (
-    <div key={post.id}>
-      <h4>{post.user}</h4>
-      <p>{post.desc}</p>
-      <video width="300" controls src={post.videoUrl} />
-      <button onClick={() => likePost(post.id, post.likes)}>
-        {post.likes.includes(user.email) ? "Beğendin" : "Beğen"} ({post.likes.length})
-      </button>
-    </div>
-  ));
-}
-
-
-// 5. Ana Uygulama - App.js
-import { useEffect, useState } from "react";
-import { auth } from "./firebase";
-import { onAuthStateChanged } from "firebase/auth";
-import Login from "./Login";
-import PostForm from "./PostForm";
-import PostList from "./PostList";
-
-function App() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    return onAuthStateChanged(auth, (user) => setUser(user));
-  }, []);
-
-  if (!user) return <Login />;
-  return (
-    <div>
-      <h2>MiniGram</h2>
-      <PostForm user={user} />
-      <PostList user={user} />
-    </div>
-  );
-}
-
-export default App;
+</body>
+</html>
