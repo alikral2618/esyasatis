@@ -1,121 +1,147 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Şablon Seçimi</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-    }
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: white;
-      padding: 10px 20px;
-      border-bottom: 1px solid #ddd;
-    }
-    .navbar .left, .navbar .right {
-      display: flex;
-      align-items: center;
-    }
-    .navbar a {
-      margin: 0 10px;
-      text-decoration: none;
-      color: #333;
-    }
-    .sidebar {
-      width: 250px;
-      padding: 20px;
-      background: #f9f9f9;
-      height: calc(100vh - 50px);
-      box-sizing: border-box;
-      position: fixed;
-      top: 50px;
-      left: 0;
-      overflow-y: auto;
-      border-right: 1px solid #ddd;
-    }
-    .content {
-      margin-left: 270px;
-      padding: 30px;
-    }
-    .templates {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 20px;
-    }
-    .template {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      overflow: hidden;
-      background: white;
-    }
-    .template img {
-      width: 100%;
-      display: block;
-    }
-    .template-title {
-      padding: 10px;
-      font-weight: bold;
-      text-align: center;
-    }
-  </style>
-</head>
-<body>
+// MiniGram - Basit Firebase Sosyal Medya Uygulaması (React + Firebase)
 
-  <div class="navbar">
-    <div class="left">
-      <strong>Wix</strong>
-      <a href="#">Özellikler</a>
-      <a href="#">Keşfedin</a>
-      <a href="#">Abonelikler</a>
-      <a href="#">Şablonlar</a>
-      <a href="#">Destek</a>
+// 1. Firebase Ayarları - firebase.js
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+
+
+// 2. Kullanıcı Girişi / Kayıt - Login.js
+import { useState } from "react";
+import { auth } from "./firebase";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+
+export default function Login() {
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+  const [isLogin, setIsLogin] = useState(true);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (isLogin) {
+      await signInWithEmailAndPassword(auth, email, pass);
+    } else {
+      await createUserWithEmailAndPassword(auth, email, pass);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
+      <input type="password" value={pass} onChange={e => setPass(e.target.value)} placeholder="Password" />
+      <button type="submit">{isLogin ? "Giriş Yap" : "Kayıt Ol"}</button>
+      <p onClick={() => setIsLogin(!isLogin)} style={{ cursor: "pointer" }}>
+        {isLogin ? "Kayıt ol" : "Zaten hesabın var mı?"}
+      </p>
+    </form>
+  );
+}
+
+
+// 3. Gönderi Paylaşımı - PostForm.js
+import { useState } from "react";
+import { db } from "./firebase";
+import { addDoc, collection, Timestamp } from "firebase/firestore";
+
+export default function PostForm({ user }) {
+  const [videoUrl, setVideoUrl] = useState("");
+  const [desc, setDesc] = useState("");
+
+  const submitPost = async (e) => {
+    e.preventDefault();
+    await addDoc(collection(db, "posts"), {
+      user: user.email,
+      videoUrl,
+      desc,
+      createdAt: Timestamp.now(),
+      likes: [],
+    });
+    setVideoUrl("");
+    setDesc("");
+  };
+
+  return (
+    <form onSubmit={submitPost}>
+      <input placeholder="Video URL" value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} />
+      <input placeholder="Açıklama" value={desc} onChange={(e) => setDesc(e.target.value)} />
+      <button type="submit">Paylaş</button>
+    </form>
+  );
+}
+
+
+// 4. Gönderi Listeleme ve Beğeni - PostList.js
+import { useEffect, useState } from "react";
+import { db } from "./firebase";
+import { collection, onSnapshot, updateDoc, doc } from "firebase/firestore";
+
+export default function PostList({ user }) {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const unsub = onSnapshot(collection(db, "posts"), (snap) => {
+      setPosts(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    });
+    return () => unsub();
+  }, []);
+
+  const likePost = async (id, likes) => {
+    const postRef = doc(db, "posts", id);
+    const newLikes = likes.includes(user.email)
+      ? likes.filter(l => l !== user.email)
+      : [...likes, user.email];
+    await updateDoc(postRef, { likes: newLikes });
+  };
+
+  return posts.map(post => (
+    <div key={post.id}>
+      <h4>{post.user}</h4>
+      <p>{post.desc}</p>
+      <video width="300" controls src={post.videoUrl} />
+      <button onClick={() => likePost(post.id, post.likes)}>
+        {post.likes.includes(user.email) ? "Beğendin" : "Beğen"} ({post.likes.length})
+      </button>
     </div>
-    <div class="right">
-      <a href="#">Giriş</a>
+  ));
+}
+
+
+// 5. Ana Uygulama - App.js
+import { useEffect, useState } from "react";
+import { auth } from "./firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import Login from "./Login";
+import PostForm from "./PostForm";
+import PostList from "./PostList";
+
+function App() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    return onAuthStateChanged(auth, (user) => setUser(user));
+  }, []);
+
+  if (!user) return <Login />;
+  return (
+    <div>
+      <h2>MiniGram</h2>
+      <PostForm user={user} />
+      <PostList user={user} />
     </div>
-  </div>
+  );
+}
 
-  <div class="sidebar">
-    <input type="text" placeholder="Örn. müzik, fotoğraf" style="width: 100%; padding: 8px; margin-bottom: 20px;">
-    <h4>Görüntüle</h4>
-    <p>YENİ!</p>
-    <p>En Popüler</p>
-    <p>Boş Şablonlar</p>
-    <h4>Kategoriler</h4>
-    <p>Tüm Şablonları Gör</p>
-    <p>İş Dünyası</p>
-    <p>Sanal Mağaza</p>
-    <p>Fotoğrafçılık</p>
-    <p>Video</p>
-    <p>Müzik</p>
-  </div>
-
-  <div class="content">
-    <h2>Beğendiğiniz site şablonunu seçin</h2>
-    <div class="templates">
-      <div class="template">
-        <img src="https://via.placeholder.com/300x200?text=Coming+Soon" alt="Coming Soon">
-        <div class="template-title">Yakında Açılış Sayfası</div>
-      </div>
-      <div class="template">
-        <img src="https://via.placeholder.com/300x200?text=Success" alt="Success">
-        <div class="template-title">Başarı Koçu</div>
-      </div>
-      <div class="template">
-        <img src="https://via.placeholder.com/300x200?text=Construction" alt="Construction">
-        <div class="template-title">İnşaat Şirketi</div>
-      </div>
-      <div class="template">
-        <img src="https://via.placeholder.com/300x200?text=Nutrition" alt="Nutrition">
-        <div class="template-title">Beslenme Ürünleri</div>
-      </div>
-    </div>
-  </div>
-
-</body>
-</html>
+export default App;
