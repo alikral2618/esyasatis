@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SocialMediaClone</title>
+    <!-- Font Awesome CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         /* Genel stil ayarları */
         body {
@@ -34,6 +36,58 @@
             color: #0095f6;
             font-size: 30px;
             font-weight: bold;
+        }
+
+        /* Hesap Açma Sayfası */
+        .login-container {
+            margin-top: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .login-container h2 {
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        .social-login-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .social-login-buttons a {
+            margin: 0 15px;
+            font-size: 40px;
+            color: #fff;
+            padding: 20px;
+            background-color: #0095f6;
+            border-radius: 50%;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        .social-login-buttons a:hover {
+            background-color: #007bb5;
+        }
+
+        .social-login-buttons .facebook {
+            background-color: #3b5998;
+        }
+
+        .social-login-buttons .twitter {
+            background-color: #1da1f2;
+        }
+
+        .social-login-buttons .gmail {
+            background-color: #db4437;
         }
 
         /* Profil Düzenleme */
@@ -139,56 +193,6 @@
         .follow-btn:hover {
             background-color: #007bb5;
         }
-
-        /* Paylaşım kısmı */
-        .feed {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            margin-top: 60px;
-        }
-
-        .post {
-            background-color: #fff;
-            width: 500px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .post img {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-        }
-
-        .post-content {
-            padding: 15px;
-        }
-
-        .post-footer {
-            padding: 15px;
-            background-color: #f3f3f3;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .post-footer button {
-            background-color: #0095f6;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .post-footer button:hover {
-            background-color: #007bb5;
-        }
-
     </style>
 </head>
 <body>
@@ -198,8 +202,26 @@
     <h1>SocialMediaClone</h1>
 </header>
 
+<!-- Hesap Açma Sayfası -->
+<div class="login-container">
+    <h2>Hesabınızı Oluşturun</h2>
+    <div class="social-login-buttons">
+        <a href="#" class="facebook">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="#" class="twitter">
+            <i class="fab fa-twitter"></i>
+        </a>
+        <a href="#" class="gmail">
+            <i class="fab fa-google"></i>
+        </a>
+    </div>
+    <p>Ya da manuel olarak hesap açabilirsiniz</p>
+    <button onclick="showProfileEditForm()">Hesap Aç</button>
+</div>
+
 <!-- Profil Düzenleme -->
-<div class="profile-edit-form">
+<div class="profile-edit-form" style="display: none;">
     <h3>Profil Düzenle</h3>
     <input type="text" id="user-name" placeholder="Adınızı Girin" value="John Doe">
     <input type="text" id="user-bio" placeholder="Biyografi yazın" value="Hayat güzel!">
@@ -207,7 +229,7 @@
 </div>
 
 <!-- Profil Sayfası -->
-<div class="profile-container">
+<div class="profile-container" style="display: none;">
     <div class="profile-header">
         <img src="https://via.placeholder.com/120" alt="User Profile">
         <h2 id="profile-name">John Doe</h2>
@@ -230,41 +252,6 @@
     </div>
 
     <a href="#" class="follow-btn" onclick="toggleFollow()">Takip Et</a>
-</div>
-
-<!-- Paylaşım Alanı -->
-<div class="feed">
-    <!-- Paylaşım 1 -->
-    <div class="post">
-        <div class="profile-header">
-            <img src="https://via.placeholder.com/40" alt="User Profile">
-            <h2>John Doe</h2>
-        </div>
-        <img src="https://via.placeholder.com/500x300" alt="Post Image">
-        <div class="post-content">
-            <p>Bugün çok güzel bir gün!</p>
-        </div>
-        <div class="post-footer">
-            <button>Beğen</button>
-            <button>Yorum Yap</button>
-        </div>
-    </div>
-
-    <!-- Paylaşım 2 -->
-    <div class="post">
-        <div class="profile-header">
-            <img src="https://via.placeholder.com/40" alt="User Profile">
-            <h2>Alice Smith</h2>
-        </div>
-        <img src="https://via.placeholder.com/500x300" alt="Post Image">
-        <div class="post-content">
-            <p>Harika bir manzara!</p>
-        </div>
-        <div class="post-footer">
-            <button>Beğen</button>
-            <button>Yorum Yap</button>
-        </div>
-    </div>
 </div>
 
 <script>
@@ -290,6 +277,12 @@
             followButton.innerText = 'Takip Et';
             document.getElementById("follower-count").innerText = parseInt(document.getElementById("follower-count").innerText) - 1;
         }
+    }
+
+    // Profil düzenleme formunu gösterme
+    function showProfileEditForm() {
+        document.querySelector('.login-container').style.display = 'none';
+        document.querySelector('.profile-edit-form').style.display = 'block';
     }
 </script>
 
