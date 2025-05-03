@@ -1,0 +1,60 @@
+﻿@using esyasatis.Entities
+@using PagedList
+@using PagedList.Mvc
+@model PagedList.IPagedList<Urun>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<a class="btn btn-primary" href="~/Urun/Create">Urun Ekle</a>
+<br />
+<br />
+<table class="table table-bordered" bgcolor="#FFFFFF">
+    <tr>
+
+        <th>Ad</th>
+        <th>Açıklama</th>
+        <th>Fiyat</th>
+        <th>Stok</th>
+
+        <th>Onay</th>
+        <th>Resim</th>
+        <th>Kategori</th>
+        <th>Sil</th>
+        <th>Güncelle</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.UrunAd</td>
+            <td>@item.Aciklama</td>
+            <td>@item.Fiyat</td>
+            <td>@item.Stok</td>
+            <td>
+                @if (item.Onay == true)
+                {
+                    <label class="btn btn-success">Evet</label>
+                }
+                else
+                {
+                    <label class="btn btn-danger">Hayır</label>
+
+                }
+            </td>
+            <td><img src="@item.resim" width="88" height="100" /></td>
+            <td>@item.kategori.kategori_isim</td>
+
+
+            <td><a href="@Url.Action("urunSil",new { @Id = item.ID })" class="btn btn-danger">Sil</a> </td>
+
+
+            <td><a class="btn btn-info" href="~/Urun/urunGuncelle/@item.ID">Güncelle</a></td>
+        </tr>
+
+        // @Html.ActionLink("Sil", "kategoriSil", new { item.ID }, new { @class = "btn btn-danger", })
+    }
+</table>
+
+<script src="~/Scripts/jquery-3.0.0.min.js"></script>
+@Html.PagedListPager(Model, sayfa => Url.Action("Index", new { sayfa }), PagedListRenderOptions.Classic)

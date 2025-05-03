@@ -1,0 +1,90 @@
+﻿@using esyasatis.Entities
+
+@model List<kategori>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div id="Durum"></div>
+<a class="btn btn-primary" href="~/AdminKategori/Create">Kategori Ekle</a>
+<br />
+<br />
+<table class="table table-bordered" bgcolor="#FFFFFF">
+    <tr>
+        <th>Ad</th>
+        <th>Açıklama</th>
+        <th>Sil</th>
+        <th>Güncelle</th>
+
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>@item.ad</td>
+    <td>@item.kategori_isim</td>
+    
+    <td ><a onclick="myFunction()" href="@Url.Action("KategoriSil",new { @Id = item.ID })"  data-id="@item.ID" name="@item.ID" class="btn btn-danger" >Sil</a> </td>
+    
+    @*<td><a class="btn btn-danger btnSil" data-id="@item.ID" name="@item.ID">Sil</a></td>*@
+    <td><a class="btn btn-info" href="~/AdminKategori/KategoriGuncelle/@item.ID">Güncelle</a></td>
+
+
+
+
+
+
+
+
+</tr>
+
+        // @Html.ActionLink("Sil", "kategoriSil", new { item.ID }, new { @class = "btn btn-danger", })
+    }
+</table>
+<script src="~/Scripts/jquery-3.0.0.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $(".btnSil").click(function () {
+            //Herhangi bir satırdaki <a..> </a> tagı tıklandığı zaman tetiklenecek olan metotdur.
+            if (confirm("silmek istediğinizden emin misiniz?")) {
+                var ID = $(this).attr('data-id');
+                //Tıklanan ilgili linkin name özelliğindeki ID değerini çekiyoruz.
+                $.ajax({
+                    url: '/AdminKategori/kategoriSil/' + ID,//Ajax ile tetiklenecek ilgili adresi belirliyoruz.
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (data) {
+                        $("#Durum").html(data);
+                        //Gelen Json veriyi ilgili taga yerleştiriyoruz.
+                    }
+                });
+
+                $(this).parent('td').parent('tr').remove();
+                //Ajax işlemi başarıyla sonuçlandıktan sonra ilgili satırı bu komut ile siliyoruz.
+        
+ 
+            }
+        });
+
+
+
+    });
+</script>
+
+<script>
+    function myFunction() {
+        alert("Kategori Silindi");
+    }
+</script>
+
+<script src="~/Scripts/jquery-3.4.1.js">
+
+
+
+
+
+</script>

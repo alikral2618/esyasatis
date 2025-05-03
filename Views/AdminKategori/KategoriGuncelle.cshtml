@@ -1,0 +1,62 @@
+﻿@*@using esyasatis.Entities
+    @model List<kategori>*@
+@model esyasatis.Entities.kategori
+
+
+
+
+@{
+    ViewBag.Title = "KategoriGuncelle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+@using (Html.BeginForm("KategoriGuncelle2", "AdminKategori", FormMethod.Post))
+{
+    <div class="form-group">
+        @*@Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "btn btn*danger" })*@
+        <br />
+
+        @*<input type="text" class="form-control" name="ad" value="@Model.ad" />
+            @Html.ValidationMessageFor(x => x.ad, "", new { @style = "color:red" })*@
+
+        @Html.LabelFor(x => x.ad)
+
+        @Html.DropDownListFor(x => x.ad, (List<SelectListItem>)ViewBag.dgr1, new { @class = "form-control" })
+
+
+
+        <br />
+
+
+
+        @*<input type="text" class="form-control" name="kategori_isim" value="@Model.kategori_isim" />*@
+        @Html.HiddenFor(x => x.ID)
+        @Html.LabelFor(x => x.kategori_isim)
+
+        @Html.TextBoxFor(x => x.kategori_isim, new { @class = "form-control" })
+
+        @* @Html.ValidationMessageFor(x => x.kategori_isim, "", new { @style = "color:red" })*@
+
+
+
+        <br />
+
+    </div>
+    <button class="btn btn-warning" id="btn1">Güncelle</button>
+    <script src="~/Scripts/jquery-3.4.1.js" ></script>
+    <script >
+        $('#btn1').click(function () {
+            alert('Kategori Eklendi');
+        });
+    </script>
+
+
+
+
+
+
+
+}
