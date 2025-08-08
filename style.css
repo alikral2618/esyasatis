@@ -1,0 +1,64 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #d0f0ff;
+}
+
+#header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#stats span {
+  margin-right: 20px;
+  font-weight: bold;
+}
+
+#game-area {
+  position: relative;
+  height: calc(100vh - 70px);
+  overflow: hidden;
+  background: linear-gradient(to top, #a0e9ff, #e0ffff);
+}
+
+.balloon {
+  width: 50px;
+  height: 70px;
+  background-color: red;
+  border-radius: 50% 50% 45% 45%;
+  position: absolute;
+  bottom: -80px;
+  cursor: pointer;
+  animation: rise 6s linear forwards;
+  box-shadow: inset -4px -4px 0 rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+
+.balloon:hover {
+  transform: scale(1.1);
+}
+
+@keyframes rise {
+  to {
+    bottom: 100%;
+  }
+}
+
+#game-over {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.hidden {
+  display: none;
+}
