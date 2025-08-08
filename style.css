@@ -53,12 +53,17 @@ body {
   transition: transform 0.2s;
 }
 
-
-@keyframes rise {
-  to {
-    bottom: 100%;
+@keyframes floatUp {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120vh);
+    opacity: 0.8;
   }
 }
+
 
 #game-over {
   position: absolute;
