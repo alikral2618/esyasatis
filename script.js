@@ -1,70 +1,19 @@
-let score = 0;
-let timeLeft = 20;
-const maxBalloons = 15;
-const balloonIntervalTime = 700;
-let balloonInterval;
-let timerInterval;
-
 function createBalloon() {
-  const balloon = document.createElement('div');
-  balloon.className = 'balloon';
-  balloon.style.left = Math.random() * (window.innerWidth - 50) + 'px';
-  balloon.style.bottom = '-80px';
+  const balloon = document.createElement("div");
+  balloon.className = "balloon";
 
-  balloon.addEventListener('click', () => {
-    score++;
-    document.getElementById('scoreboard').textContent = 'Skor: ' + score;
-    balloon.remove();
+  // Rastgele pozisyon
+  balloon.style.left = Math.random() * window.innerWidth + "px";
+  balloon.style.top = Math.random() * window.innerHeight + "px";
+
+  // Tıklanınca patlasın
+  balloon.addEventListener("click", () => {
+    balloon.remove(); // Balon silinir = patlamış olur
+    // İstersen patlama efekti veya ses de ekleyebilirsin
   });
 
-  document.body.appendChild(balloon);
-
-  setTimeout(() => {
-    if(document.body.contains(balloon)) balloon.remove();
-  }, 6000);
+  document.getElementById("game-area").appendChild(balloon);
 }
 
-function startGame() {
-  score = 0;
-  timeLeft = 20;
-  document.getElementById('scoreboard').textContent = 'Skor: 0';
-  document.getElementById('timer').textContent = 'Süre: 20';
-
-  balloonInterval = setInterval(() => {
-    if(document.querySelectorAll('.balloon').length < maxBalloons) {
-      createBalloon();
-    }
-  }, balloonIntervalTime);
-
-  timerInterval = setInterval(() => {
-    timeLeft--;
-    document.getElementById('timer').textContent = 'Süre: ' + timeLeft;
-    if(timeLeft <= 0) {
-      clearInterval(timerInterval);
-      clearInterval(balloonInterval);
-      alert('Süre doldu! Skorun: ' + score);
-      document.querySelectorAll('.balloon').forEach(b => b.remove());
-    }
-  }, 1000);
-}
-
-window.onload = () => {
-  startGame();
-};
-  }, balloonIntervalTime);
-
-  timerInterval = setInterval(() => {
-    timeLeft--;
-    document.getElementById('timer').textContent = 'Süre: ' + timeLeft;
-    if(timeLeft <= 0) {
-      clearInterval(timerInterval);
-      clearInterval(balloonInterval);
-      alert('Süre doldu! Skorun: ' + score);
-      document.querySelectorAll('.balloon').forEach(b => b.remove());
-    }
-  }, 1000);
-}
-
-window.onload = () => {
-  startGame();
-};
+// Her 1 saniyede bir yeni balon oluştur
+setInterval(createBalloon, 1000);
