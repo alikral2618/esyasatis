@@ -39,7 +39,6 @@ function createBalloon() {
   balloon.className = "balloon";
 
   balloon.style.left = Math.random() * (window.innerWidth - 60) + "px";
-  balloon.style.backgroundColor = getRandomColor();
 
   balloon.addEventListener("click", () => {
     score++;
