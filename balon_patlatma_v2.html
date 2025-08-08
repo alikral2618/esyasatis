@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<title>Balon Patlatma Oyunu v2</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0; padding: 0;
+    overflow: hidden;
+    background: #87ceeb;
+    position: relative;
+    height: 100vh;
+  }
+  #scoreboard {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 1px 1px 2px #000;
+  }
+  #timer {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 1px 1px 2px #000;
+  }
+  .balloon {
+    position: absolute;
+    width: 50px;
+    height: 70px;
+    background: radial-gradient(circle at 50% 30%, #ff4b4b, #b22222);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    cursor: pointer;
+    animation: floatUp 6s linear forwards;
+  }
+  @keyframes floatUp {
+    0% { bottom: -80px; opacity: 1; }
+    100% { bottom: 110vh; opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div id="scoreboard">Skor: 0</div>
+<div id="timer">Süre: 20</div>
+
+<script>
+  let score = 0;
+  let timeLeft = 20;
+  const maxBalloons = 15;
+  const balloonIntervalTime = 700;
+  let balloonInterval;
+  let timerInterval;
+
+  function createBalloon() {
+    const balloon = document.createElement('div');
+    balloon.className = 'balloon';
+    balloon.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+    balloon.style.bottom = '-80px';
+
+    balloon.addEventListener('click', () => {
+      score++;
+      document.getElementById('scoreboard').textContent = 'Skor: ' + score;
+      balloon.remove();
+    });
+
+    document.body.appendChild(balloon);
+
+    setTimeout(() => {
+      if(document.body.contains(balloon)) balloon.remove();
+    }, 6000);
+  }
+
+  function startGame() {
+    score = 0;
+    timeLeft = 20;
+    document.getElementById('scoreboard').textContent = 'Skor: 0';
+    document.getElementById('timer').textContent = 'Süre: 20';
+
+    balloonInterval = setInterval(() => {
+      if(document.querySelectorAll('.balloon').length < maxBalloons) {
+        createBalloon();
+      }
+    }, balloonIntervalTime);
+
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      document.getElementById('timer').textContent = 'Süre: ' + timeLeft;
+      if(timeLeft <= 0) {
+        clearInterval(timerInterval);
+        clearInterval(balloonInterval);
+        alert('Süre doldu! Skorun: ' + score);
+        document.querySelectorAll('.balloon').forEach(b => b.remove());
+      }
+    }, 1000);
+  }
+
+  window.onload = () => {
+    startGame();
+  };
+</script>
+
+</body>
+</html>
