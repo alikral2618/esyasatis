@@ -12,7 +12,9 @@ function startGame() {
 
   timerInterval = setInterval(() => {
     timeLeft--;
-    document.getElementById("timer").textContent = timeLeft;
+    document.getElementById("timer").textContent = timeLeft 
+    balloon.style.backgroundColor = "#3498db"; // Mavi
+    
 
     if (timeLeft <= 0) {
       endGame();
