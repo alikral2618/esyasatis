@@ -51,3 +51,20 @@ function startGame() {
 window.onload = () => {
   startGame();
 };
+  }, balloonIntervalTime);
+
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    document.getElementById('timer').textContent = 'Süre: ' + timeLeft;
+    if(timeLeft <= 0) {
+      clearInterval(timerInterval);
+      clearInterval(balloonInterval);
+      alert('Süre doldu! Skorun: ' + score);
+      document.querySelectorAll('.balloon').forEach(b => b.remove());
+    }
+  }, 1000);
+}
+
+window.onload = () => {
+  startGame();
+};
