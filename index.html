@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Balon Patlatma</title>
-  <style>
-    .balloon {
-      width: 60px;
-      height: 80px;
-      background-color: red;
-      border-radius: 50%;
-      position: absolute;
-      cursor: pointer;
-      transition: transform 0.1s ease;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <title>Balon Patlatma Oyunu</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="game-area" style="position:relative; width:100%; height:100vh; background:#eef;"></div>
+  <div id="header">
+    <h1>Balon Patlatma Oyunu</h1>
+    <div id="stats">
+      <span>Skor: <span id="score">0</span></span>
+      <span>Süre: <span id="timer">30</span>s</span>
+    </div>
+  </div>
+
+  <div id="game-area"></div>
+
+  <div id="game-over" class="hidden">
+    <h2>Oyun Bitti!</h2>
+    <p>Toplam Skor: <span id="final-score"></span></p>
+    <button onclick="restartGame()">Yeniden Oyna</button>
+  </div>
 
   <script src="script.js"></script>
 </body>
